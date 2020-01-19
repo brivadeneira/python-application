@@ -3,7 +3,8 @@
 
 
 
-from types import FunctionType, UnboundMethodType
+#from types import FunctionType, UnboundMethodType
+import inspect
 from application.python.decorator import preserve_signature
 
 
@@ -15,9 +16,9 @@ class Singleton(type):
 
     # noinspection PyInitNewSignature
     def __init__(cls, name, bases, dictionary):
-        if type(cls.__init__) is UnboundMethodType:
+        if inspect.ismethod(cls.__init__):
             initializer = cls.__init__
-        elif type(cls.__new__) is FunctionType:
+        elif inspect.isfunction(cls.__new__):
             initializer = cls.__new__
         else:
             # noinspection PyUnusedLocal
