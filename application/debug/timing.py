@@ -27,7 +27,7 @@ import struct
 import sys
 
 from collections import deque
-from itertools import chain, izip, takewhile
+from itertools import chain, takewhile
 from time import clock, time
 
 from application.python.decorator import decorator, preserve_signature
@@ -37,8 +37,8 @@ from application.python.types import MarkerType
 __all__ = 'Timer', 'TimeProbe', 'timer', 'time_probe', 'measure_time'
 
 
-class Automatic(object):
-    __metaclass__ = MarkerType
+class Automatic(object, metaclass=MarkerType):
+    pass
 
 
 class Autodetect(int):
@@ -121,11 +121,11 @@ class Timer(object):
                     normalized_time, time_unit = normalize_time(statement_time)
 
                     if self.description is not None:
-                        format_string = u'{} loops, best of {}: {:.{precision}g} {} per loop ({:.{rate_precision}f} operations/sec); {description}'
+                        format_string = '{} loops, best of {}: {:.{precision}g} {} per loop ({:.{rate_precision}f} operations/sec); {description}'
                     else:
-                        format_string = u'{} loops, best of {}: {:.{precision}g} {} per loop ({:.{rate_precision}f} operations/sec)'
+                        format_string = '{} loops, best of {}: {:.{precision}g} {} per loop ({:.{rate_precision}f} operations/sec)'
                     rate_precision = 2 if statement_rate < 10 else 1 if statement_rate < 100 else 0
-                    print format_string.format(loops, self.repeat, normalized_time, time_unit, statement_rate, description=self.description, precision=3, rate_precision=rate_precision)
+                    print(format_string.format(loops, self.repeat, normalized_time, time_unit, statement_rate, description=self.description, precision=3, rate_precision=rate_precision))
                 finally:
                     del parent
         finally:
@@ -245,7 +245,7 @@ class Timer(object):
         byte_increments.appendleft(len(loop_header))
         line_increments.appendleft(1)
 
-        line_numbers_table = bytes(bytearray(chain.from_iterable(takewhile(WithinCodeRange(len(loop_header + code_bytes)), izip(byte_increments, line_increments)))))
+        line_numbers_table = bytes(bytearray(chain.from_iterable(takewhile(WithinCodeRange(len(loop_header + code_bytes)), zip(byte_increments, line_increments)))))
 
         return code(o_code.co_argcount, o_code.co_nlocals, o_code.co_stacksize, o_code.co_flags, new_code_bytes, code_constants, names, o_code.co_varnames,
                     o_code.co_filename, o_code.co_name, o_code.co_firstlineno + line_offset - 1, line_numbers_table, o_code.co_freevars, o_code.co_cellvars)
@@ -312,10 +312,10 @@ class TimeProbe(object):
                 error_string = ''
             if self.description is not None:
                 # format_string = u'{:.{precision}g} {}{}; {description}'
-                format_string = u'{description}: {:.{precision}g} {}{}'
+                format_string = '{description}: {:.{precision}g} {}{}'
             else:
-                format_string = u'{:.{precision}g} {}{}'
-            print format_string.format(normalized_time, time_unit, error_string, description=self.description, precision=3)
+                format_string = '{:.{precision}g} {}{}'
+            print(format_string.format(normalized_time, time_unit, error_string, description=self.description, precision=3))
         del self._start_time
 
 time_probe = TimeProbe
@@ -357,7 +357,7 @@ class _MeasurementProbe(object):
         gc_enabled = gc.isenabled()
         gc.disable()
         try:
-            return _MeasurementSamples(self.get_sample() for _ in xrange(iterations))
+            return _MeasurementSamples(self.get_sample() for _ in range(iterations))
         finally:
             if gc_enabled:
                 gc.enable()

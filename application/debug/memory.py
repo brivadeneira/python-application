@@ -67,7 +67,7 @@ class Cycle(tuple):
                 priority = 2
             elif type(obj).__module__ in ('__builtin__', 'builtins'):
                 priority = 1
-            elif isinstance(obj, (tuple, list, dict, set, frozenset, str, unicode)):
+            elif isinstance(obj, (tuple, list, dict, set, frozenset, str)):
                 priority = 3
             else:
                 priority = 4
@@ -84,9 +84,9 @@ class Cycle(tuple):
                 d = cycle.popleft()
                 try:
                     if cycle:
-                        string += ' .%s' % (key for key, value in d.iteritems() if value is cycle[0]).next()
+                        string += ' .%s' % next((key for key, value in d.items() if value is cycle[0]))
                     else:
-                        string += ' .%s' % (key for key, value in d.iteritems() if value is first_obj).next()
+                        string += ' .%s' % next((key for key, value in d.items() if value is first_obj))
                 except StopIteration:
                     string += ' .__dict__ -> %s' % repr(d)
             string += ' -> '
@@ -96,7 +96,7 @@ class Cycle(tuple):
 
 
 def memory_dump(show_cycles=True, show_objects=False):
-    print '\nGARBAGE:'
+    print('\nGARBAGE:')
     gc.collect()
     garbage = gc.garbage[:]
 
@@ -109,7 +109,7 @@ def memory_dump(show_cycles=True, show_objects=False):
         cycles = set()
         remaining_nodes = nodes.copy()
         while remaining_nodes:
-            path = [next(remaining_nodes.itervalues())]
+            path = [next(iter(remaining_nodes.values()))]
             while path:
                 node = path[-1]
                 remaining_nodes.pop(id(node.object), None)
@@ -123,16 +123,16 @@ def memory_dump(show_cycles=True, show_objects=False):
                     node.visitable_successors = deque(node.successors)
                     path.pop(-1)
 
-        for node in nodes.itervalues():
+        for node in nodes.values():
             node.successors = node.visitable_successors = None
 
-        print '\nCOLLECTABLE CYCLES:'
+        print('\nCOLLECTABLE CYCLES:')
         for cycle in (c for c in cycles if c.collectable):
-            print cycle
+            print(cycle)
 
-        print '\nUNCOLLECTABLE CYCLES:'
+        print('\nUNCOLLECTABLE CYCLES:')
         for cycle in (c for c in cycles if not c.collectable):
-            print cycle
+            print(cycle)
 
     if show_objects:
         try:
@@ -141,12 +141,12 @@ def memory_dump(show_cycles=True, show_objects=False):
         except Exception:
             console_width = 80
 
-        print '\nGARBAGE OBJECTS:'
+        print('\nGARBAGE OBJECTS:')
         for x in garbage:
             s = str(x)
             if len(s) > console_width-2:
                 s = s[:console_width-5] + '...'
-            print '%s\n  %s' % (type(x), s)
+            print('%s\n  %s' % (type(x), s))
 
 
 gc.enable()

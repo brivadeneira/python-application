@@ -126,10 +126,8 @@ class RuntimeSettings(object):
             raise ProcessError('lacking permissions to access the runtime directory at %s' % directory)
 
 
-class Process(object):
+class Process(object, metaclass=Singleton):
     """Control how the current process runs and interacts with the operating system"""
-
-    __metaclass__ = Singleton
 
     def __init__(self):
         self._daemon = False
@@ -290,10 +288,8 @@ class Process(object):
             raise RuntimeError('Network is not available after waiting for {} seconds'.format(wait_time))
 
 
-class Signals(object):
+class Signals(object, metaclass=Singleton):
     """Interface to the system signals"""
-
-    __metaclass__ = Singleton
     
     def __init__(self):
         self._handlers = {}
