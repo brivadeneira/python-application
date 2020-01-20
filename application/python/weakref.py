@@ -19,7 +19,7 @@ class objectref(weakref.ref):
         self.id = id(object)
 
 
-class weakobjectid(long):
+class weakobjectid(int):
     def __new__(cls, object, discard_callback):
         instance = int.__new__(cls, id(object))
         instance.ref = objectref(object, discard_callback)

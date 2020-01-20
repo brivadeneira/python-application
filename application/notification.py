@@ -6,7 +6,7 @@ from collections import deque
 from datetime import datetime
 from threading import Lock
 from time import time
-from zope.interface import Interface, implements
+from zope.interface import Interface, implementer
 
 from application import log
 from application.python.descriptor import ThreadLocal
@@ -33,6 +33,7 @@ class IObserver(Interface):
         """Function used to handle a posted Notification"""
 
 
+@implementer(IObserver)        
 class ObserverWeakrefProxy(object):
     """
     A proxy that allows an observer to be weakly referenced and automatically
@@ -40,7 +41,6 @@ class ObserverWeakrefProxy(object):
     before its reference count dropped to zero.
     """
 
-    implements(IObserver)
 
     observer_map = weakobjectmap()
     lock = Lock()

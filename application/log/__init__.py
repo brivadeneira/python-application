@@ -141,7 +141,7 @@ class Logger(logging.Logger):
 
 
 # logging.setLoggerClass(Logger)
-logging.Logger.exception = Logger.exception.__func__
+logging.Logger.exception = Logger.exception#.__func__()
 logging.exception = exception
 
 
