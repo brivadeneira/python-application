@@ -1,12 +1,12 @@
 
 """Event processing queues, that process the events in a distinct thread"""
+import snoop
 
 import queue
 from threading import Thread, Event, Lock
 
 from application import log
 from application.python.types import MarkerType
-
 
 __all__ = 'EventQueue', 'CumulativeEventQueue'
 
@@ -17,10 +17,9 @@ class StopProcessing(metaclass=MarkerType): pass
 class ProcessEvents(metaclass=MarkerType):  pass
 class DiscardEvents(metaclass=MarkerType):  pass
 
-
 class EventQueue(Thread):
     """Simple event processing queue that processes one event at a time"""
-
+    @snoop
     def __init__(self, handler, name=None, preload=()):
         if not callable(handler):
             raise TypeError('handler should be a callable')
@@ -35,7 +34,7 @@ class EventQueue(Thread):
         self.handle = handler
         self.load(preload)
         self._active.set()
-
+    @snoop
     def run(self):
         """Run the event queue processing loop in its own thread"""
         while not self._exit.isSet():
