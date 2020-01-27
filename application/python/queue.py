@@ -13,9 +13,17 @@ __all__ = 'EventQueue', 'CumulativeEventQueue'
 
 # Special events that control the queue operation (for internal use)
 
-class StopProcessing(metaclass=MarkerType): pass
-class ProcessEvents(metaclass=MarkerType):  pass
-class DiscardEvents(metaclass=MarkerType):  pass
+class StopProcessing(metaclass=MarkerType):
+    pass
+
+
+class ProcessEvents(metaclass=MarkerType):
+    pass
+
+
+class DiscardEvents(metaclass=MarkerType):
+    pass
+
 
 class EventQueue(Thread):
     """Simple event processing queue that processes one event at a time"""
@@ -34,7 +42,7 @@ class EventQueue(Thread):
         self.handle = handler
         self.load(preload)
         self._active.set()
-    @snoop
+
     def run(self):
         """Run the event queue processing loop in its own thread"""
         while not self._exit.isSet():

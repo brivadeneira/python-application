@@ -8,7 +8,6 @@ import logging
 import warnings
 import __main__
 
-from application.log.extensions import twisted
 from application.python import Null
 
 try:
@@ -36,7 +35,7 @@ class Formatter(logging.Formatter):
             message = record.message
         if self.prefix_format:
             prefix = self.prefix_format.format(record=record).ljust(self.prefix_length)
-            message = '\n'.join(prefix+l for l in message.split('\n'))
+            message = '\n'.join(prefix + l for l in message.split('\n'))
         return message
 
     def formatException(self, exc_info):
@@ -141,7 +140,7 @@ class Logger(logging.Logger):
 
 
 # logging.setLoggerClass(Logger)
-logging.Logger.exception = Logger.exception#.__func__()
+logging.Logger.exception = Logger.exception  # .__func__()
 logging.exception = exception
 
 
@@ -252,10 +251,10 @@ level = LevelHandler()
 #
 
 class SyslogHandler(logging.Handler):
-    priority_map = {logging.DEBUG:    syslog.LOG_DEBUG,
-                    logging.INFO:     syslog.LOG_INFO,
-                    logging.WARNING:  syslog.LOG_WARNING,
-                    logging.ERROR:    syslog.LOG_ERR,
+    priority_map = {logging.DEBUG: syslog.LOG_DEBUG,
+                    logging.INFO: syslog.LOG_INFO,
+                    logging.WARNING: syslog.LOG_WARNING,
+                    logging.ERROR: syslog.LOG_ERR,
                     logging.CRITICAL: syslog.LOG_CRIT}
 
     def __init__(self, name, facility=syslog.LOG_DAEMON):

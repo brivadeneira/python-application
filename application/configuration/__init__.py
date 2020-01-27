@@ -19,7 +19,7 @@ __all__ = 'ConfigFile', 'ConfigSection', 'ConfigSetting', 'SaveState', 'AtomicUp
 
 class ConfigFile(object):
     """Provide access to a configuration file"""
-    
+
     instances = {}
 
     def __new__(cls, filename):
@@ -60,7 +60,7 @@ class ConfigFile(object):
             except Exception as e:
                 log.warning('ignoring invalid config value: %s.%s=%s (%s).' % (section, setting, value, e))
                 return default
-    
+
     def get_section(self, section, filter=None, default=None):
         """
         Return a list of (name, value) pairs from a section. If filter is an

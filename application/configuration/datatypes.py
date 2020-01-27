@@ -15,7 +15,7 @@ __all__ = 'Boolean', 'LogLevel', 'StringList', 'IPAddress', 'Hostname', 'Hostnam
 class Boolean(object):
     """A boolean validator that handles multiple boolean input keywords: yes/no, true/false, on/off, 1/0"""
 
-    __valuemap__ = {'1': True,  'yes': True, 'true': True,   'on': True,
+    __valuemap__ = {'1': True, 'yes': True, 'true': True, 'on': True,
                     '0': False, 'no': False, 'false': False, 'off': False}
 
     def __new__(cls, value):
@@ -154,7 +154,7 @@ class NetworkRange(object):
             network_address = socket.inet_aton(ip_address)
         except Exception:
             raise ValueError('invalid IP address: %r' % ip_address)
-        network_mask = (0xFFFFFFFF << 32-mask_bits) & 0xFFFFFFFF
+        network_mask = (0xFFFFFFFF << 32 - mask_bits) & 0xFFFFFFFF
         base_address = struct.unpack('!L', network_address)[0] & network_mask
         return base_address, network_mask
 

@@ -33,15 +33,15 @@ class AnonymousSender(Sender):
 class CatchAllObserver(object):
     """An observer that registers itself to receive all notifications."""
     implements(IObserver)
-    
+
     def register(self):
         print("Registering CatchAllObserver to receive all notifications")
         NotificationCenter().add_observer(self)
-    
+
     def unregister(self):
         print("Unregistering CatchAllObserver from receiving all notifications")
         NotificationCenter().remove_observer(self)
-    
+
     def handle_notification(self, notification):
         print("In CatchAllObserver got %r" % (notification,))
 
@@ -49,15 +49,15 @@ class CatchAllObserver(object):
 class SimpleObserver(object):
     """An observer that registers itself for notifications with name 'simple'."""
     implements(IObserver)
-    
+
     def register(self):
         print("Registering SimpleObserver to receive notifications with name 'simple' from any sender")
         NotificationCenter().add_observer(self, name='simple')
-    
+
     def unregister(self):
         print("Unregistering SimpleObserver from receiving notifications with name 'simple' from any sender")
         NotificationCenter().remove_observer(self, name='simple')
-    
+
     def handle_notification(self, notification):
         print("In SimpleObserver got %r" % (notification,))
 
@@ -68,15 +68,15 @@ class ObjectObserver(object):
 
     def __init__(self, sender):
         self.sender = sender
-    
+
     def register(self):
         print("Registering ObjectObserver to receive notifications with any name from sender %r" % (self.sender,))
         NotificationCenter().add_observer(self, sender=self.sender)
-    
+
     def unregister(self):
         print("Unregistering ObjectObserver from receiving notifications with any name from sender %r" % (self.sender,))
         NotificationCenter().remove_observer(self, sender=self.sender)
-    
+
     def handle_notification(self, notification):
         print("In ObjectObserver got %r" % (notification,))
 
@@ -84,11 +84,11 @@ class ObjectObserver(object):
 class VolatileAllObserver(object):
     """An observer that registers itself to receive all notifications and it is weakly referenced"""
     implements(IObserver)
-    
+
     def __init__(self):
         print("Registering VolatileAllObserver to receive all notifications")
         NotificationCenter().add_observer(ObserverWeakrefProxy(self))
-    
+
     def handle_notification(self, notification):
         print("In VolatileAllObserver got %r" % (notification,))
 
@@ -120,4 +120,3 @@ del volatile_observer
 print("\nSending notifications from AnonymousSender:")
 print("-------------------------------------------")
 anonymous.publish()
-

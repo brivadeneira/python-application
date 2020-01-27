@@ -48,6 +48,7 @@ class Autodetect(int):
     def __repr__(self):
         return self.__class__.__name__
 
+
 Autodetect = Autodetect()
 
 
@@ -203,12 +204,12 @@ class Timer(object):
         loop_header = bytearray('\x78\x00\x00\x65\x00\x00\x64\x00\x00\x83\x01\x00\x44\x5d\x00\x00\x01')
         loop_footer = bytearray('\x71\x0d\x00\x57\x64\x00\x00\x53')
 
-        struct.pack_into('<H', loop_header,  1, len(loop_header) + len(code_bytes) + 1)    # SETUP_LOOP delta (xx)
-        struct.pack_into('<H', loop_header,  4, len(names) - 1)                            # LOAD_NAME index for range function
-        struct.pack_into('<H', loop_header,  7, len(code_constants) - 1)                   # LOAD_CONST index for loop count
+        struct.pack_into('<H', loop_header, 1, len(loop_header) + len(code_bytes) + 1)    # SETUP_LOOP delta (xx)
+        struct.pack_into('<H', loop_header, 4, len(names) - 1)                            # LOAD_NAME index for range function
+        struct.pack_into('<H', loop_header, 7, len(code_constants) - 1)                   # LOAD_CONST index for loop count
         struct.pack_into('<H', loop_header, 14, len(loop_header) + len(code_bytes) - 13)   # FOR_ITER delta (yy)
 
-        struct.pack_into('<H', loop_footer,  5, code_constants.index(None))                # LOAD_CONST index for None
+        struct.pack_into('<H', loop_footer, 5, code_constants.index(None))                # LOAD_CONST index for None
 
         # adjust the jump addresses within the original code block to match the new bytecode offset they will have within the for loop
         index = 0
@@ -272,6 +273,7 @@ class Timer(object):
             loops = 10**9
         return loops
 
+
 timer = Timer
 
 
@@ -317,6 +319,7 @@ class TimeProbe(object):
                 format_string = '{:.{precision}g} {}{}'
             print(format_string.format(normalized_time, time_unit, error_string, description=self.description, precision=3))
         del self._start_time
+
 
 time_probe = TimeProbe
 

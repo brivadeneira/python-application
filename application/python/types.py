@@ -1,9 +1,6 @@
 
 """Types and meta classes"""
 
-
-
-#from types import FunctionType, UnboundMethodType
 import inspect
 from application.python.decorator import preserve_signature
 
@@ -22,7 +19,8 @@ class Singleton(type):
             initializer = cls.__new__
         else:
             # noinspection PyUnusedLocal
-            def initializer(self, *args, **kw): pass
+            def initializer(self, *args, **kw):
+                pass
 
         # noinspection PyShadowingNames
         @preserve_signature(initializer)

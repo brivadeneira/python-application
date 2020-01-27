@@ -45,7 +45,7 @@ class HostProperties(object, metaclass=Singleton):
 
     @property
     def domain(self):
-        return socket.getfqdn()[len(socket.gethostname())+1:] or None
+        return socket.getfqdn()[len(socket.gethostname()) + 1:] or None
 
     @property
     def aliases(self):

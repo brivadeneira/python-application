@@ -59,7 +59,7 @@ class Cycle(tuple):
     def __str__(self):
         index = max_priority = 0
         for i, obj in enumerate(self):
-            if obj is getattr(self[i-1], '__dict__', None):
+            if obj is getattr(self[i - 1], '__dict__', None):
                 continue
             if isinstance(obj, types.MethodType):
                 priority = 0
@@ -144,8 +144,8 @@ def memory_dump(show_cycles=True, show_objects=False):
         print('\nGARBAGE OBJECTS:')
         for x in garbage:
             s = str(x)
-            if len(s) > console_width-2:
-                s = s[:console_width-5] + '...'
+            if len(s) > console_width - 2:
+                s = s[:console_width - 5] + '...'
             print('%s\n  %s' % (type(x), s))
 
 

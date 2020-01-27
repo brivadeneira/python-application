@@ -7,6 +7,10 @@ import re
 __all__ = 'Version',
 
 
+def cmp(a, b):
+    return (a > b) - (a < b)
+
+
 class Version(str):
     """A major.minor.micro[extraversion] version string that is comparable"""
 
@@ -105,4 +109,3 @@ class Version(str):
 
     def __ne__(self, other):
         return self.__cmp__(other) != 0
-

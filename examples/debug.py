@@ -5,6 +5,7 @@
 # Timing code execution
 
 from application.debug.timing import timer
+from application.debug.memory import *
 
 s1 = 'abcdef'
 s2 = 'ghijkl'
@@ -42,7 +43,6 @@ class C2(object):
     def __del__(self):
         pass
 
-from application.debug.memory import *
 
 print("")
 print("Debugging memory leaks")

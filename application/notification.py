@@ -33,14 +33,13 @@ class IObserver(Interface):
         """Function used to handle a posted Notification"""
 
 
-@implementer(IObserver)        
+@implementer(IObserver)
 class ObserverWeakrefProxy(object):
     """
     A proxy that allows an observer to be weakly referenced and automatically
     removes any remaining registrations that the observer didn't clean itself
     before its reference count dropped to zero.
     """
-
 
     observer_map = weakobjectmap()
     lock = Lock()
@@ -198,10 +197,10 @@ class NotificationCenter(object, metaclass=Singleton):
 
         while queue:
             notification = queue[0]
-            observers = (self.observers.get((Any, Any), empty_set) |
-                         self.observers.get((Any, notification.sender), empty_set) |
-                         self.observers.get((notification.name, Any), empty_set) |
-                         self.observers.get((notification.name, notification.sender), empty_set))
+            observers = (self.observers.get((Any, Any), empty_set)
+                         | self.observers.get((Any, notification.sender), empty_set)
+                         | self.observers.get((notification.name, Any), empty_set)
+                         | self.observers.get((notification.name, notification.sender), empty_set))
             for observer in observers:
                 try:
                     observer.handle_notification(notification)
