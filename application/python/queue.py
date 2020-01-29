@@ -1,6 +1,5 @@
 
 """Event processing queues, that process the events in a distinct thread"""
-import snoop
 
 import queue
 from threading import Thread, Event, Lock
@@ -27,7 +26,7 @@ class DiscardEvents(metaclass=MarkerType):
 
 class EventQueue(Thread):
     """Simple event processing queue that processes one event at a time"""
-    @snoop
+
     def __init__(self, handler, name=None, preload=()):
         if not callable(handler):
             raise TypeError('handler should be a callable')
