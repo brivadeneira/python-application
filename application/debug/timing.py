@@ -110,7 +110,7 @@ class Timer(object):
                                 duration *= 10
                                 loops *= 10
                             new_code = self._adjust_loop_count(new_code, loops)
-                            start_time = self.time_function()
+                            start_time =self.time_function()
                             exec(new_code, parent.f_globals, parent.f_locals)
                             duration = self.time_function() - start_time
                         results.append(duration)
@@ -160,7 +160,8 @@ class Timer(object):
 
         code_start = with_start + 3  # move past the SETUP_WITH opcode (1 byte opcode itself + 2 bytes delta)
         # skip the next bytecode which can be one of POP_TOP, STORE_FAST, STORE_NAME, UNPACK_SEQUENCE (POP_TOP is 1 byte, the others are 3)
-        if ord(o_code.co_code[code_start]) == dis.opmap['POP_TOP']:
+        # if ord(o_code.co_code[code_start]) == dis.opmap['POP_TOP']:
+        if o_code.co_code[code_start] == dis.opmap['POP_TOP']:
             code_start += 1
         else:
             code_start += 3
@@ -168,12 +169,12 @@ class Timer(object):
 
         code_bytes = bytearray(o_code.co_code[code_start:code_end])
 
-        try:
-            xrange
-        except NameError:
-            names = o_code.co_names + ('range',)
-        else:
-            names = o_code.co_names + ('xrange',)
+        # try:
+        #    xrange
+        # except NameError:
+        names = o_code.co_names + ('range',)
+        #else:
+        #    names = o_code.co_names + ('xrange',)
 
         code_constants = o_code.co_consts + (loop_count,)
 
@@ -201,8 +202,8 @@ class Timer(object):
         # xx +  3 == zz + 4  ->  xx = len(loop_header) + len(code_bytes) + 4 -  3 = len(loop_header) + len(code_bytes) +  1
         # yy + 16 == zz + 3  ->  yy = len(loop_header) + len(code_bytes) + 3 - 16 = len(loop_header) + len(code_bytes) - 13  (13 is the FOR_ITER bytecode offset)
 
-        loop_header = bytearray('\x78\x00\x00\x65\x00\x00\x64\x00\x00\x83\x01\x00\x44\x5d\x00\x00\x01')
-        loop_footer = bytearray('\x71\x0d\x00\x57\x64\x00\x00\x53')
+        loop_header = bytearray(b'\x78\x00\x00\x65\x00\x00\x64\x00\x00\x83\x01\x00\x44\x5d\x00\x00\x01')
+        loop_footer = bytearray(b'\x71\x0d\x00\x57\x64\x00\x00\x53')
 
         struct.pack_into('<H', loop_header, 1, len(loop_header) + len(code_bytes) + 1)    # SETUP_LOOP delta (xx)
         struct.pack_into('<H', loop_header, 4, len(names) - 1)                            # LOAD_NAME index for range function
@@ -248,7 +249,7 @@ class Timer(object):
 
         line_numbers_table = bytes(bytearray(chain.from_iterable(takewhile(WithinCodeRange(len(loop_header + code_bytes)), zip(byte_increments, line_increments)))))
 
-        return code(o_code.co_argcount, o_code.co_nlocals, o_code.co_stacksize, o_code.co_flags, new_code_bytes, code_constants, names, o_code.co_varnames,
+        return code(o_code.co_argcount, o_code.co_kwonlyargcount, o_code.co_nlocals, o_code.co_stacksize, o_code.co_flags, new_code_bytes, code_constants, names, o_code.co_varnames,
                     o_code.co_filename, o_code.co_name, o_code.co_firstlineno + line_offset - 1, line_numbers_table, o_code.co_freevars, o_code.co_cellvars)
 
     @staticmethod
@@ -259,8 +260,8 @@ class Timer(object):
         # is the last entry in the constants tuple (which is how _build_loop_code builds the constants tuple)
         code_constants = o_code.co_consts[:-1] + (new_count,)
 
-        return code(o_code.co_argcount, o_code.co_nlocals, o_code.co_stacksize, o_code.co_flags, o_code.co_code, code_constants, o_code.co_names, o_code.co_varnames,
-                    o_code.co_filename, o_code.co_name, o_code.co_firstlineno, o_code.co_lnotab, o_code.co_freevars, o_code.co_cellvars)
+        return code(o_code.co_argcount, o_code.co_kwonlyargcount, o_code.co_nlocals, o_code.co_stacksize, o_code.co_flags, o_code.co_code, code_constants,
+                    o_code.co_names, o_code.co_varnames, o_code.co_filename, o_code.co_name, o_code.co_firstlineno, o_code.co_lnotab, o_code.co_freevars, o_code.co_cellvars)
 
     @staticmethod
     def _estimate_loop_count(run_time, loop_count):
