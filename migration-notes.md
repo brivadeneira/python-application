@@ -1,10 +1,8 @@
 # python-application notes
 
-[TOC]
+## Installing
 
-### Installing
-
-#### Debian requirements
+### Debian requirements
 
 * Requirements
     * `libmpfr-dev`
@@ -14,9 +12,9 @@
 To install debian requirements: 
 `sudo apt install libmpfr-dev libmpc-dev libmpc-dev`
 
-### Issues
+## Issues
 
-#### python is not installing dependencies listed in install_requires of setuptools
+### python is not installing dependencies listed in install_requires of setuptools
 
 ```
 running install
@@ -45,7 +43,7 @@ setuptools         41.4.0
 wheel              0.33.6    
 ```
 
-##### Install dependencies from file
+#### Install dependencies from file
 
 * requirements.txt content: 
 
@@ -56,7 +54,7 @@ zope.interface
 
 `pip install -r requirements.txt` 
 
-##### Solve the issue
+#### Solve the issue
 
 In `setup.py` file change line 4: 
 
@@ -185,3 +183,14 @@ Missing argument in python 3 code(), next line solves the error:
 When try to exec a compiled code.
 
 > This seems to be a bug on the newest python's versions which dessapears using `python 3.5`.
+
+#### TypeError
+
+```shell=python
+    super(Cycle, self).__init__(*args, **kw)
+TypeError: object.__init__() takes no parameters
+```
+
+In python 3 `object.__new__` and `object.__init__` no longer take arguments. Object doesn't do anything with arguments to `__init__` and `__new__` so it shouldn't accept them.
+
+The fix would seem to be to not pass the arguments to `object.__init__`.
