@@ -1,7 +1,7 @@
 
 """A generic, resizable thread pool"""
 
-from queue import Queue
+import queue as queue
 from itertools import count
 from threading import Lock, Thread, current_thread
 

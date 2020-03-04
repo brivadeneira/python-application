@@ -6,7 +6,6 @@ from threading import RLock
 
 from application.python.weakref import weakobjectmap
 
-
 __all__ = 'decorator', 'preserve_signature', 'execute_once'
 
 
