@@ -37,7 +37,6 @@ class Node(object):
 
 class Cycle(tuple):
     def __init__(self, *args, **kw):
-        #super(Cycle, self).__init__(*args, **kw)
         super(Cycle, self).__init__()
         self.collectable = all(not hasattr(obj, '__del__') for obj in self)
 

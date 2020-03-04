@@ -110,7 +110,7 @@ class Timer(object):
                                 duration *= 10
                                 loops *= 10
                             new_code = self._adjust_loop_count(new_code, loops)
-                            start_time =self.time_function()
+                            start_time = self.time_function()
                             exec(new_code, parent.f_globals, parent.f_locals)
                             duration = self.time_function() - start_time
                         results.append(duration)
@@ -173,7 +173,7 @@ class Timer(object):
         #    xrange
         # except NameError:
         names = o_code.co_names + ('range',)
-        #else:
+        # else:
         #    names = o_code.co_names + ('xrange',)
 
         code_constants = o_code.co_consts + (loop_count,)

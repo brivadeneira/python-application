@@ -72,4 +72,3 @@ del a, b
 
 print("\n\nThis will reveal an uncollectable circular reference (mem leak)")
 memory_dump()
-

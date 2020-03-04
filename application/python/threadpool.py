@@ -30,7 +30,7 @@ class ThreadPool(object):
         assert 0 <= min_threads <= max_threads > 0, 'invalid bounds'
         self.name = name
         self._lock = Lock()
-        self._queue = Queue()
+        self._queue = queue()
         self._thread_id = None
         self._threads = []
         self._started = False
