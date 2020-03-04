@@ -37,7 +37,8 @@ class Node(object):
 
 class Cycle(tuple):
     def __init__(self, *args, **kw):
-        super(Cycle, self).__init__(*args, **kw)
+        #super(Cycle, self).__init__(*args, **kw)
+        super(Cycle, self).__init__()
         self.collectable = all(not hasattr(obj, '__del__') for obj in self)
 
     def __eq__(self, other):
@@ -97,6 +98,7 @@ class Cycle(tuple):
 
 def memory_dump(show_cycles=True, show_objects=False):
     print('\nGARBAGE:')
+
     gc.collect()
     garbage = gc.garbage[:]
 
